@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Avatar Update Page</title>
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+
+        form {
+            margin: 0 auto;
+            width: 500px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #000;
+            color: #fff;
+            padding: 10px;
+            border: 1px solid #000;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Update Avatar</h1>
+    <form action="url/updateavatar" method="POST">
+        <label for="avatar-url">Avatar URL:</label>
+        <input type="text" id="avatar-url" name="avatar-url" required><br>
+
+        <button type="submit">Update Avatar</button>
+    </form>
+</body>
+</html>

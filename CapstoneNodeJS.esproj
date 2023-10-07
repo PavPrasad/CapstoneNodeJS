@@ -1,8 +1,16 @@
 <Project Sdk="Microsoft.VisualStudio.JavaScript.Sdk/0.5.83-alpha">
   <PropertyGroup>
     <!-- Command to run on project build -->
-    <BuildCommand></BuildCommand>
+    <BuildCommand>
+    </BuildCommand>
     <!-- Command to run on project clean -->
-    <CleanCommand></CleanCommand>
+    <CleanCommand>
+    </CleanCommand>
   </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="crud\" />
+    <Folder Include="Models\" />
+    <Folder Include="Webpages\" />
+    <Folder Include="usermgmt\" />
+  </ItemGroup>
 </Project>
