@@ -45,7 +45,6 @@ const GetUser = (username) => {
     return new Promise((resolve, reject) => {
         const existingUser = Player.findOne({ username });
         if (existingUser) {
-            console.log(existingUser)
             resolve(existingUser);
         } else {
             reject("User not found");
@@ -83,10 +82,9 @@ const DeleteUser = (username, password) => {
 };
 
 const VerifyUserLogin = (username, password) => {
-    return new Promise((resolve, reject) => {
-        const existingUser = Player.findOne({ username, password });
+    return new Promise(async (resolve, reject) => {
+        const existingUser = await Player.findOne({ username, password });
         if (existingUser) {
-            console.log(existingUser)
             resolve(existingUser);
         } else {
             reject("Username or passord incorrect");

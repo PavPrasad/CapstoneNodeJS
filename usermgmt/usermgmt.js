@@ -1,10 +1,8 @@
 const express = require('express');
 const router = express.Router();
 router.use(express.json())
+router.use(express.urlencoded({ extended: true }));
 const { GetUser, AddUser, DeleteUser, VerifyUserLogin, testdb, deletetest } = require('../crud/crud')
-
-
-
 
 function ini(a,b) {
     PROJECT_DIR = a
@@ -20,7 +18,6 @@ function generateAccessToken(username) {
 
     // Generate a hash of the token data
     const accessToken = crypto.createHash('sha256').update(tokenData).digest('hex');
-
     return accessToken;
 }
 
@@ -59,12 +56,12 @@ router.route('/deltest').post((req, res) => {
 })
 
 router.route('/signup').post((req, res) => {
-    console.log(req.body.username.toString());
+    console.log(req.body.username, req.body.password)
     AddUser(req.body.username, req.body.password)
         .then((message) => {
-            res.status(201).json({ message });
+            res.status(201).send( message );
         }).catch((error) => {
-            res.status(401).json({ error });
+            res.status(401).send(error );
         })
 });
 
@@ -84,12 +81,13 @@ router.route('/delete').post((req, res) => {
 });
 
 router.route('/serverLogin').post((req, res) => {
-    //console.log(arr);
-    const { username, accesstoken } = req.body;
-    if (username == NaN || accesstoken == NaN || username == "") {
-        res.status(422).send("Invalid Entry2");
-    }
-    VerifyUserLogin(username, password);
+    console.log(req.body.username, req.body.password)
+    VerifyUserLogin(req.body.username, req.body.password)
+        .then((message) => {
+        res.status(201).json({ message });
+    }).catch((error) => {
+        res.status(401).send( error );
+    });
 }
 );
 
