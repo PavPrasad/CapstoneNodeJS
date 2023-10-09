@@ -11,6 +11,5 @@
     <Folder Include="crud\" />
     <Folder Include="Models\" />
     <Folder Include="Webpages\" />
-    <Folder Include="usermgmt\" />
   </ItemGroup>
 </Project>

@@ -1,9 +1,8 @@
 
 const express = require('express');
-const { router, ini } = require('./usermgmt/usermgmt.js');
+const { router, iniuser } = require('./usermgmt/usermgmt.js');
 require('dotenv').config()
 const { connectDB } = require('./crud/crud')
-
 
 const http = require('http');
 const https = require('https');
@@ -31,8 +30,10 @@ app.all('*', (req, res, next) => {
 
 const start = async () => {
     try {
-        ini(process.env.PROJECT_DIR, process.env.DELETE_PASSWORD)
+        iniuser(process.env.PROJECT_DIR, process.env.DELETE_PASSWORD)
         app.use(router);
+        app.use(passport.initialize());
+        app.use(passport.session());
         await connectDB(process.env.MONGO_URI)
     }
     catch (error) {

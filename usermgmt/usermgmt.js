@@ -3,8 +3,10 @@ const router = express.Router();
 router.use(express.json())
 router.use(express.urlencoded({ extended: true }));
 const { GetUser, AddUser, DeleteUser, VerifyUserLogin, testdb, deletetest } = require('../crud/crud')
+const passport = require('passport');
 
-function ini(a,b) {
+
+function iniuser(a,b) {
     PROJECT_DIR = a
     DELETE_PASSWORD = b
 }
@@ -21,6 +23,13 @@ function generateAccessToken(username) {
     return accessToken;
 }
 
+
+router.get('/auth/google', passport.authenticate('google'));
+
+router.get('/auth/google/callback', passport.authenticate('google', {
+    successRedirect: '/',
+    failureRedirect: '/login'
+}));
 
 router.get('/signup', (req, res) => {
     res.sendFile(PROJECT_DIR + '/Webpages' + '/signup.html')
@@ -91,7 +100,12 @@ router.route('/serverLogin').post((req, res) => {
 }
 );
 
+
+router.route('/').all((req,res)=> {
+    res.status(404).send("Invalid Address");
+})
+
 module.exports = {
     router,
-    ini
+    iniuser
 }; 
