@@ -1,13 +1,14 @@
 const express = require('express');
 const router = express.Router();
-//router.use(express.json())
+router.use(express.json())
 const { GetUser, AddUser, DeleteUser, VerifyUserLogin, testdb, deletetest } = require('../crud/crud')
 
 
 
 
-function ini(LocalDir) {
-    PROJECT_DIR = LocalDir
+function ini(a,b) {
+    PROJECT_DIR = a
+    DELETE_PASSWORD = b
 }
 
 function generateAccessToken(username) {
@@ -49,33 +50,37 @@ router.route('/test').post((req, res) => {
 router.route('/deltest').post((req, res) => {
     const data = req.body;
     deletetest(data).
-    then((message) => {
-        res.status(201).json({ message });
-    })
-    .catch((error) => {
-        res.status(201).json({ error });
-    });
+        then((message) => {
+            res.status(201).json({ message });
+        })
+        .catch((error) => {
+            res.status(201).json({ error });
+        });
 })
 
 router.route('/signup').post((req, res) => {
-    AddUser(req.body)
+    console.log(req.body.username.toString());
+    AddUser(req.body.username, req.body.password)
         .then((message) => {
             res.status(201).json({ message });
         }).catch((error) => {
             res.status(401).json({ error });
         })
-    /*const { username, password } = req.body;
-    if (username == NaN || password == NaN || username == "") {
-        res.status(422).send("Invalid Entry");
+});
 
+
+router.route('/delete').post((req, res) => {
+    if (req.body.pwd === DELETE_PASSWORD ) {
+        DeleteUser(req.body.username, req.body.password)
+            .then((message) => {
+                res.status(201).json({ message });
+            }).catch((error) => {
+                res.status(401).json({ error });
+            })
     } else {
-        AddUser(req.body)
-        .then((message) => {
-            res.status(201).json({ message });
-        }).catch((error) => {
-            res.status(401).json({ error });
-        })
-    }*/
+        res.status(403).send("Access denied");
+    }
+
 });
 
 router.route('/serverLogin').post((req, res) => {
@@ -87,8 +92,6 @@ router.route('/serverLogin').post((req, res) => {
     VerifyUserLogin(username, password);
 }
 );
-
-
 
 module.exports = {
     router,

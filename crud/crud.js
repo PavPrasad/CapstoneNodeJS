@@ -18,7 +18,6 @@ const connectDB = async (url) => {
     await mongoose.connect(url, { useNewUrlParser: true })
 }
 
-
 const MyModel = mongoose.model('Test', new mongoose.Schema({ username: String, password: String }));
 const testdb = async (data) => {
     console.log(data)
@@ -46,6 +45,7 @@ const GetUser = (username) => {
     return new Promise((resolve, reject) => {
         const existingUser = Player.findOne({ username });
         if (existingUser) {
+            console.log(existingUser)
             resolve(existingUser);
         } else {
             reject("User not found");
@@ -53,28 +53,26 @@ const GetUser = (username) => {
     });
 };
 
-const AddUser = (username, password) => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            const isd = await GetUser(username);
-            if (isd) {
-                reject("User already exists");
-            } else {
-                const newPlayer =  new Player(username, password)
-                resolve("Player added")
-            }
-        } catch (error) {
-            console.log(error)
-            reject("Other");
+const AddUser = async (username, password) => {
+    try {
+        const existingUser = await GetUser(username);
+        if (existingUser) {
+            throw new Error("User already exists");
         }
-    });
+        const newPlayer = new Player({ username, password });
+        await newPlayer.save();
+
+        return "Player added";
+    } catch (error) {
+        return error.message;
+    }
 };
 const DeleteUser = (username, password) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const result = await Player.deleteOne(username,password)
+            const result = await Player.deleteOne({ username, password })
             if (result.deletedCount == 1) {
-                resolve("Succesfully deleted user l")
+                resolve("Succesfully deleted user" + username)
             } else {
                 reject("User not found");
             }
@@ -85,7 +83,15 @@ const DeleteUser = (username, password) => {
 };
 
 const VerifyUserLogin = (username, password) => {
-
+    return new Promise((resolve, reject) => {
+        const existingUser = Player.findOne({ username, password });
+        if (existingUser) {
+            console.log(existingUser)
+            resolve(existingUser);
+        } else {
+            reject("Username or passord incorrect");
+        }
+    });
 }
 
 module.exports = {
