@@ -1,14 +1,20 @@
 
-const express = require('express');
-const { router, iniuser } = require('./usermgmt/usermgmt.js');
 require('dotenv').config()
-const { connectDB } = require('./crud/crud')
+
+const express = require('express');
+//const passport = require('passport');
+const session = require('express-session');
+
+const { userrouter } = require('./usermgmt/usermgmt');
+const { connectDB } = require('./crud/crud');
+const { passport } = require('./usermgmt/passportconfig');
 
 const http = require('http');
 const https = require('https');
 const fs = require('fs');
 
 const app = express();
+
 
 const domain = process.env.DOMAIN_NAME;
 const certificate = fs.readFileSync('./certificate.pem');
@@ -28,13 +34,27 @@ app.all('*', (req, res, next) => {
     res.redirect(`https://${req.headers.host}${req.url}`);
 });
 
+
+app.use(userrouter);
+
+app.use(session({
+    secret: 'YOUR_SESSION_SECRET'
+}));
+app.get('/auth/google', passport.authenticate('google'));
+
+app.get('/auth/google/callback', passport.authenticate('google', {
+    successRedirect: '/',
+    failureRedirect: '/login'
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+
 const start = async () => {
     try {
-        iniuser(process.env.PROJECT_DIR, process.env.DELETE_PASSWORD)
-        app.use(router);
-        app.use(passport.initialize());
-        app.use(passport.session());
+        console.log("begin")
+        //iniuser(process.env.PROJECT_DIR, process.env.DELETE_PASSWORD)
         await connectDB(process.env.MONGO_URI)
+        app.listen(3000, console.log("Started Listenting at 3000"));
     }
     catch (error) {
         console.log(error);

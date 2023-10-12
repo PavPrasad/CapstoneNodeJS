@@ -9,11 +9,7 @@ const playerSchema = new mongoose.Schema({
 
 const Player = mongoose.model('player', playerSchema);
 
-const loggedInSchema = new mongoose.Schema({
-    username: String,
-    sessionid: String,
-    body: String,
-})
+
 const connectDB = async (url) => {
     await mongoose.connect(url, { useNewUrlParser: true })
 }
@@ -58,7 +54,7 @@ const AddUser = async (username, password) => {
         if (existingUser) {
             throw new Error("User already exists");
         }
-        const newPlayer = new Player({ username, password });
+        const newPlayer = new Player({ username, password,"body":"" });
         await newPlayer.save();
 
         return "Player added";
@@ -81,6 +77,7 @@ const DeleteUser = (username, password) => {
     });
 };
 
+
 const VerifyUserLogin = (username, password) => {
     return new Promise(async (resolve, reject) => {
         const existingUser = await Player.findOne({ username, password });
@@ -91,6 +88,18 @@ const VerifyUserLogin = (username, password) => {
         }
     });
 }
+
+const bodySchema = new mongoose.Schema({
+    username: String,
+    Body: String
+})
+
+
+
+
+
+
+
 
 module.exports = {
     connectDB,

@@ -1,15 +1,11 @@
 const express = require('express');
-const router = express.Router();
-router.use(express.json())
-router.use(express.urlencoded({ extended: true }));
+const userrouter = express.Router();
+
+userrouter.use(express.json())
+userrouter.use(express.urlencoded({ extended: true }));
 const { GetUser, AddUser, DeleteUser, VerifyUserLogin, testdb, deletetest } = require('../crud/crud')
-const passport = require('passport');
 
 
-function iniuser(a,b) {
-    PROJECT_DIR = a
-    DELETE_PASSWORD = b
-}
 
 function generateAccessToken(username) {
     const currentTime = Date.now().toString();
@@ -24,36 +20,30 @@ function generateAccessToken(username) {
 }
 
 
-router.get('/auth/google', passport.authenticate('google'));
 
-router.get('/auth/google/callback', passport.authenticate('google', {
-    successRedirect: '/',
-    failureRedirect: '/login'
-}));
-
-router.get('/signup', (req, res) => {
-    res.sendFile(PROJECT_DIR + '/Webpages' + '/signup.html')
+userrouter.get('/signup', (req, res) => {
+    res.sendFile(process.env.PROJECT_DIR + '/Webpages' + '/signup.html')
 })
 
-router.get('/login', (req, res) => {
-    res.sendFile(PROJECT_DIR + '/Webpages' + '/login.html')
+userrouter.get('/login', (req, res) => {
+    res.sendFile(process.env.PROJECT_DIR + '/Webpages' + '/login.html')
 })
 
-router.get('/updateavatar', (req, res) => {
-    res.sendFile(PROJECT_DIR + '/Webpages' + '/updateavatar.html')
+userrouter.get('/updateavatar', (req, res) => {
+    res.sendFile(process.env.PROJECT_DIR + '/Webpages' + '/updateavatar.html')
 })
-router.get('/model/avatar/:id', (req, res) => {
+userrouter.get('/model/avatar/:id', (req, res) => {
     console.log(req.params.id)
-    res.sendFile(PROJECT_DIR + '/Models/avatar/' + req.params.id + '.gltf')
+    res.sendFile(process.env.PROJECT_DIR + '/Models/avatar/' + req.params.id + '.gltf')
 
 })
-router.route('/test').post((req, res) => {
+userrouter.route('/test').post((req, res) => {
     const data = req.body;
     const task = testdb(data);
     res.status(201).json({ task });
 
 })
-router.route('/deltest').post((req, res) => {
+userrouter.route('/deltest').post((req, res) => {
     const data = req.body;
     deletetest(data).
         then((message) => {
@@ -64,8 +54,12 @@ router.route('/deltest').post((req, res) => {
         });
 })
 
-router.route('/signup').post((req, res) => {
-    console.log(req.body.username, req.body.password)
+userrouter.put('/updateavatar', (req,res) => {
+
+})
+
+userrouter.route('/signup').post((req, res) => {
+    //console.log(req.body.username, req.body.password)
     AddUser(req.body.username, req.body.password)
         .then((message) => {
             res.status(201).send( message );
@@ -75,8 +69,8 @@ router.route('/signup').post((req, res) => {
 });
 
 
-router.route('/delete').post((req, res) => {
-    if (req.body.pwd === DELETE_PASSWORD ) {
+userrouter.route('/delete').post((req, res) => {
+    if (req.body.pwd === process.env.DELETE_PASSWORD ) {
         DeleteUser(req.body.username, req.body.password)
             .then((message) => {
                 res.status(201).json({ message });
@@ -89,11 +83,15 @@ router.route('/delete').post((req, res) => {
 
 });
 
-router.route('/serverLogin').post((req, res) => {
-    console.log(req.body.username, req.body.password)
+userrouter.route('/serverLogin').post((req, res) => {
+    //console.log(req.body.username, req.body.password)
     VerifyUserLogin(req.body.username, req.body.password)
         .then((message) => {
-        res.status(201).json({ message });
+            if (message.body === "") {
+                res.status(201).json({ error: "please enter avatar details before entering" });
+            } else {
+                res.status(201).json({ message });
+            }
     }).catch((error) => {
         res.status(401).send( error );
     });
@@ -101,11 +99,10 @@ router.route('/serverLogin').post((req, res) => {
 );
 
 
-router.route('/').all((req,res)=> {
+userrouter.route('/').all((req,res)=> {
     res.status(404).send("Invalid Address");
 })
 
 module.exports = {
-    router,
-    iniuser
-}; 
+    userrouter
+};
