@@ -89,6 +89,8 @@ const VerifyUserLogin = (username, password) => {
     });
 }
 
+//add schema to store cookie details and to verify details
+
 const bodySchema = new mongoose.Schema({
     username: String,
     Body: String

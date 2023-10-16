@@ -20,7 +20,6 @@ function generateAccessToken(username) {
 }
 
 
-
 userrouter.get('/signup', (req, res) => {
     res.sendFile(process.env.PROJECT_DIR + '/Webpages' + '/signup.html')
 })
@@ -55,7 +54,7 @@ userrouter.route('/deltest').post((req, res) => {
 })
 
 userrouter.put('/updateavatar', (req,res) => {
-
+    res.status(501);
 })
 
 userrouter.route('/signup').post((req, res) => {
@@ -83,14 +82,16 @@ userrouter.route('/delete').post((req, res) => {
 
 });
 
-userrouter.route('/serverLogin').post((req, res) => {
+userrouter.route('/login').post((req, res) => {
     //console.log(req.body.username, req.body.password)
     VerifyUserLogin(req.body.username, req.body.password)
         .then((message) => {
             if (message.body === "") {
-                res.status(201).json({ error: "please enter avatar details before entering" });
+                res.status(201).send("please enter avatar details before entering");
             } else {
-                res.status(201).json({ message });
+                const data = { username: message.username, cookie: generateAccessToken(message.username), ttl: "86400", body: message.body };
+
+                res.status(200).json(data);
             }
     }).catch((error) => {
         res.status(401).send( error );
@@ -98,10 +99,18 @@ userrouter.route('/serverLogin').post((req, res) => {
 }
 );
 
-
-userrouter.route('/').all((req,res)=> {
-    res.status(404).send("Invalid Address");
+userrouter.route('/loginOauth').get((req, res) => {
+    res.status(501);
 })
+
+
+userrouter.route('/').get((req,res) => {
+    res.sendFile(process.env.PROJECT_DIR + '/Webpages' + '/index.html')
+})
+
+/*userrouter.route('/').all((req,res)=> {
+    res.status(404).send("Invalid Address");
+})*/
 
 module.exports = {
     userrouter
