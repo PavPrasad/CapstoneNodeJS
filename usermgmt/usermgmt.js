@@ -1,9 +1,9 @@
 const express = require('express');
 const userrouter = express.Router();
-
+const crypto = require('crypto');
 userrouter.use(express.json())
 userrouter.use(express.urlencoded({ extended: true }));
-const { GetUser, AddUser, DeleteUser, VerifyUserLogin, testdb, deletetest } = require('../crud/crud')
+const { GetUser, AddUser, DeleteUser, VerifyUserLogin, testdb, deletetest, AddCookie, CheckCookie } = require('../crud/crud')
 
 
 
@@ -53,7 +53,7 @@ userrouter.route('/deltest').post((req, res) => {
         });
 })
 
-userrouter.put('/updateavatar', (req,res) => {
+userrouter.put('/updateavatar', (req, res) => {
     res.status(501);
 })
 
@@ -61,17 +61,18 @@ userrouter.route('/signup').post((req, res) => {
     //console.log(req.body.username, req.body.password)
     AddUser(req.body.username, req.body.password)
         .then((message) => {
-            res.status(201).send( message );
+            res.status(201).send(message);
         }).catch((error) => {
-            res.status(401).send(error );
+            res.status(401).send(error);
         })
 });
 
 
 userrouter.route('/delete').post((req, res) => {
-    if (req.body.pwd === process.env.DELETE_PASSWORD ) {
+    if (req.body.pwd === process.env.DELETE_PASSWORD) {
         DeleteUser(req.body.username, req.body.password)
             .then((message) => {
+                DeleteCookie(message.username);
                 res.status(201).json({ message });
             }).catch((error) => {
                 res.status(401).json({ error });
@@ -82,29 +83,56 @@ userrouter.route('/delete').post((req, res) => {
 
 });
 
+myttl = "86400000"
 userrouter.route('/login').post((req, res) => {
-    //console.log(req.body.username, req.body.password)
+    console.log(req.body.username, req.body.password)
     VerifyUserLogin(req.body.username, req.body.password)
         .then((message) => {
             if (message.body === "") {
                 res.status(201).send("please enter avatar details before entering");
             } else {
-                const data = { username: message.username, cookie: generateAccessToken(message.username), ttl: "86400", body: message.body };
-
-                res.status(200).json(data);
+                AddCookie(message.username, generateAccessToken(message.username), myttl)
+                    .then((message2) => {
+                        console.log(message2.cookie)
+                        const data = {
+                            username: message.username, cookie: message2.cookie,
+                            ttl: myttl, body: message.body
+                        };
+                        res.status(200).json(data);
+                    }).catch((error) => {
+                        console.log(error);
+                        res.status(500).send("Some error in saving cookies on the server");
+                    });
             }
-    }).catch((error) => {
-        res.status(401).send( error );
-    });
+        })
+        .catch((error) => {
+            res.status(401).send(error);
+        });
 }
 );
+
+userrouter.route('/unityLogin').post((req, res) => {
+    CheckCookie(req.body.username, req.body.cookie)
+        .then((cookiedetails) => {
+            console.log(cookiedetails);
+            const a = new Date();
+            if (cookiedetails.expiry > a) {
+                res.status(200).send("Login Successful");
+            } else {
+                res.status(201).send("Please Login, this error must not be visible")
+            }
+        }).catch((error)=>{
+            res.status(404).send("Username or password incorrect");
+        })
+})
+
 
 userrouter.route('/loginOauth').get((req, res) => {
     res.status(501);
 })
 
 
-userrouter.route('/').get((req,res) => {
+userrouter.route('/').get((req, res) => {
     res.sendFile(process.env.PROJECT_DIR + '/Webpages' + '/index.html')
 })
 
