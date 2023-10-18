@@ -3,22 +3,23 @@ const userrouter = express.Router();
 const crypto = require('crypto');
 userrouter.use(express.json())
 userrouter.use(express.urlencoded({ extended: true }));
-const { GetUser, AddUser, DeleteUser, VerifyUserLogin, testdb, deletetest, AddCookie, CheckCookie } = require('../crud/crud')
+const {
+    AddUser,
+    DeleteUser,
+    VerifyUserLogin,
+    deletetest,
+    CheckCookie,
+    DeleteCookie,
+    AddCookie,
+    addBodyDetails
+} = require('../crud/crud')
 
 
 
-function generateAccessToken(username) {
-    const currentTime = Date.now().toString();
-    const hashedUsername = crypto.createHash('md5').update(username).digest('hex');
-
-    // Concatenate the current time and hashed username
-    const tokenData = currentTime + hashedUsername;
-
-    // Generate a hash of the token data
-    const accessToken = crypto.createHash('sha256').update(tokenData).digest('hex');
-    return accessToken;
+function generateAccessToken(e) {
+    let t = Date.now().toString(), a = crypto.createHash("md5").update(e).digest("hex"),
+    n = crypto.createHash("sha256").update(t + a).digest("hex"); return n
 }
-
 
 userrouter.get('/signup', (req, res) => {
     res.sendFile(process.env.PROJECT_DIR + '/Webpages' + '/signup.html')
@@ -54,7 +55,14 @@ userrouter.route('/deltest').post((req, res) => {
 })
 
 userrouter.put('/updateavatar', (req, res) => {
-    res.status(501);
+    VerifyUserLogin(req.body.username, req.body.password)
+        .then((message) => {
+            addBodyDetails(message.username,message.password,req.body.body)
+            res.status(200).send("Finished updating details");
+        })
+        .catch(() => {
+            res.status(404).send("Username or password incorrect");
+        });
 })
 
 userrouter.route('/signup').post((req, res) => {
@@ -139,6 +147,8 @@ userrouter.route('/').get((req, res) => {
 /*userrouter.route('/').all((req,res)=> {
     res.status(404).send("Invalid Address");
 })*/
+
+//
 
 module.exports = {
     userrouter

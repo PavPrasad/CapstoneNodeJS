@@ -113,6 +113,15 @@ const CheckCookie = (username, cookie) => {
     });
 }
 
+const addBodyDetails = async (username,password,playerbody) => {
+    try {
+        await Player.updateOne({ username, password }, { $set: { body: playerbody } })
+        console.log('Document updated successfully.');
+    } catch (err) {
+            console.error(err);
+    };
+}
+
 const AddCookie = (username, cookie, ttl) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -166,6 +175,57 @@ module.exports = {
     deletetest,
     CheckCookie,
     DeleteCookie,
-    AddCookie
+    AddCookie,
+    addBodyDetails
 };
 
+/*
+Debugger attached.
+express-session deprecated undefined resave option; provide resave option app.js:29:9
+express-session deprecated undefined saveUninitialized option; provide saveUninitialized option app.js:29:9
+Started server
+{
+  _id: new ObjectId("652e6e8bf22eb017252b39aa"),
+  username: 's3h',
+  password: 'fff',
+  body: 'aksjdhf',
+  __v: 0
+}
+CastError: Cast to string failed for value "{
+  _id: new ObjectId("652e6e8bf22eb017252b39aa"),
+  username: 's3h',
+  password: 'fff',
+  body: 'aksjdhf',
+  __v: 0
+}" (type Object) at path "username" for model "player"
+    at SchemaString.cast (D:\Sem7\Capstone\CapstoneNodeJS\CapstoneNodeJS\node_modules\mongoose\lib\schema\string.js:606:11)
+    at SchemaType.applySetters (D:\Sem7\Capstone\CapstoneNodeJS\CapstoneNodeJS\node_modules\mongoose\lib\schematype.js:1220:12)
+    at SchemaString.castForQuery (D:\Sem7\Capstone\CapstoneNodeJS\CapstoneNodeJS\node_modules\mongoose\lib\schema\string.js:690:15)
+    at cast (D:\Sem7\Capstone\CapstoneNodeJS\CapstoneNodeJS\node_modules\mongoose\lib\cast.js:298:34)
+    at Query.cast (D:\Sem7\Capstone\CapstoneNodeJS\CapstoneNodeJS\node_modules\mongoose\lib\query.js:4911:12)
+    at Query._castConditions (D:\Sem7\Capstone\CapstoneNodeJS\CapstoneNodeJS\node_modules\mongoose\lib\query.js:2232:10)    at model.Query._updateThunk (D:\Sem7\Capstone\CapstoneNodeJS\CapstoneNodeJS\node_modules\mongoose\lib\query.js:3855:8)
+    at model.Query._updateOne (D:\Sem7\Capstone\CapstoneNodeJS\CapstoneNodeJS\node_modules\mongoose\lib\query.js:3965:23)
+    at model.Query.exec (D:\Sem7\Capstone\CapstoneNodeJS\CapstoneNodeJS\node_modules\mongoose\lib\query.js:4430:28)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5) {
+  stringValue: '"{\n' +
+    '  _id: new ObjectId("652e6e8bf22eb017252b39aa"),\n' +
+    "  username: 's3h',\n" +
+    "  password: 'fff',\n" +
+    "  body: 'aksjdhf',\n" +
+    '  __v: 0\n' +
+    '}"',
+  messageFormat: undefined,
+  kind: 'string',
+  value: {
+    _id: new ObjectId("652e6e8bf22eb017252b39aa"),
+    username: 's3h',
+    password: 'fff',
+    body: 'aksjdhf',
+    __v: 0
+  },
+  path: 'username',
+  reason: null,
+  valueType: 'Object',
+  model: Model { player }
+}
+*/
