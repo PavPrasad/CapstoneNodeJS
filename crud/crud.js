@@ -113,12 +113,12 @@ const CheckCookie = (username, cookie) => {
     });
 }
 
-const addBodyDetails = async (username,password,playerbody) => {
+const addBodyDetails = async (username, password, playerbody) => {
     try {
         await Player.updateOne({ username, password }, { $set: { body: playerbody } })
         console.log('Document updated successfully.');
     } catch (err) {
-            console.error(err);
+        console.error(err);
     };
 }
 
@@ -130,7 +130,7 @@ const AddCookie = (username, cookie, ttl) => {
             // Check if the same user has a cookie and delete it if it exists
             if (isCookie) {
                 await Cookie.deleteOne({ username });
-                console.log("THIS"+isCookie)
+                console.log("THIS" + isCookie)
             }
             const d = new Date();
             d.setTime(d.getTime() + Number(ttl));
@@ -150,12 +150,11 @@ const AddCookie = (username, cookie, ttl) => {
 const DeleteCookie = (username) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const isCookie = CheckCookie(username);
-            //check if the same user has a cookie
+            const isCookie = await Cookie.findOne({ username });
+            // Check if the same user has a cookie and delete it if it exists
             if (isCookie) {
-                Cookie.deleteOne(isCookie);
-                //delete it and insert the new one
-                resolve(true);
+                await Cookie.deleteOne({ username });
+                resolve();
             }
         } catch (error) {
             reject(error);
