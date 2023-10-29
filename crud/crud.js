@@ -14,7 +14,7 @@ const Player = mongoose.model('player', playerSchema);
 
 const connectDB = async () => {
     await mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true })
-    var mysession = session({
+    return session({
         secret: process.env.SECRET_SESSION_KEY,
         resave: false,
         saveUninitialized: true,
@@ -25,7 +25,6 @@ const connectDB = async () => {
             autoRemove: 'native'
         })
     })
-    return mysession;
 }
 /*
 const MyModel = mongoose.model('Test', new mongoose.Schema({ username: String, password: String }));
