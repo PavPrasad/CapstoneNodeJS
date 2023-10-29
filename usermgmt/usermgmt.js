@@ -145,7 +145,12 @@ userrouter.route('/unityLogin').post((req, res) => {
 
 
 userrouter.route('/loginOauth').get((req, res) => {
-    res.status(501).send("not built");
+    const displayName = req.session.displayName;
+    const email = req.session.email;
+
+    // Display the user's display name and email
+    res..status(200).send(`<h1>${displayName}</h1><p>${email}</p>`);
+
 })
 
 
