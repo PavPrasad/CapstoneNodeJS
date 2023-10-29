@@ -146,7 +146,7 @@ userrouter.route('/unityLogin').post((req, res) => {
 
 
 userrouter.route('/loginOauth').get((req, res) => {
-    res.status(200).send(req.session);
+    res.status(200).send(`<h1>${req.session}</h1><p>"HI"</p>`);
 })
 
 userrouter.route('/').get((req, res) => {
