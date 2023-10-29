@@ -11,13 +11,8 @@ passport.use(new GoogleStrategy({
     accessType: 'offline',
     prompt: 'consent'
 }, async (accessToken, refreshToken, profile, done) => {
-    // Get the user's email address from the Google profile.
     const email = profile.emails[0].value;
-    // Find the user in your database.
-    console.log(email);
-    // Return the user to Passport
-
-    //todo handle all user details into mongo use the crud app etc
+    console.log(accessToken, refreshToken, profile);
 
     done(null);
 }));
