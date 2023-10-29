@@ -146,8 +146,6 @@ userrouter.route('/unityLogin').post((req, res) => {
 
 
 userrouter.route('/loginOauth').get((req, res) => {
-    const displayName = req.session.displayname;
-    const email = req.session.email;
     res.status(200).send(req.session);
 })
 
