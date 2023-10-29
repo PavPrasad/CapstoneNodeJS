@@ -2,7 +2,6 @@
 require('dotenv').config()
 
 const express = require('express');
-//const passport = require('passport');
 const { userrouter } = require('./usermgmt/usermgmt');
 const { connectDB } = require('./crud/crud');
 const { passport } = require('./usermgmt/passportconfig');
@@ -25,21 +24,17 @@ const httpsServer = https.createServer({
 */
 app.use(userrouter);
 
-app.use(session({
-    secret: 'YOUR_SESSION_SECRET'
-}));
-app.get('/auth/google', passport.authenticate('google'));
-
 app.get('/auth/google/callback', passport.authenticate('google', {
     successRedirect: '/',
     failureRedirect: '/loginOauth'
 }));
 app.use(passport.initialize());
-app.use(passport.session());
 
 const start = async () => {
     try {
-        await connectDB(process.env.MONGO_URI)
+        const sessionvar = await connectDB()
+        app.use(sessionvar);
+        //app.listen(3000,console.log("Started server"))
     }
     catch (error) {
         console.log(error);

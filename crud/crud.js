@@ -1,5 +1,7 @@
 
 const mongoose = require('mongoose')
+const session = require('express-session')
+const MongoStore = require('connect-mongodb-session')(session);
 
 const playerSchema = new mongoose.Schema({
     username: String,
@@ -10,8 +12,20 @@ const playerSchema = new mongoose.Schema({
 const Player = mongoose.model('player', playerSchema);
 
 
-const connectDB = async (url) => {
-    await mongoose.connect(url, { useNewUrlParser: true })
+const connectDB = async () => {
+    await mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true })
+    var mysession = session({
+        secret: process.env.SECRET_SESSION_KEY,
+        resave: false,
+        saveUninitialized: true,
+        store: new MongoStore({
+            databaseName: 'sessions',
+            uri: process.env.MONGO_URI,
+            ttl:  60 * 60,
+            autoRemove: 'native'
+        })
+    })
+    return mysession;
 }
 /*
 const MyModel = mongoose.model('Test', new mongoose.Schema({ username: String, password: String }));
@@ -162,6 +176,42 @@ const DeleteCookie = (username) => {
     });
 }
 
+const OauthSchema = new mongoose.Schema({
+    id : String,
+    displayname: String,
+    email: String,
+    body:String
+})
+const Oauth = mongoose.model("OauthStorage", OauthSchema);
+
+const AddOauthUser = async(id,displayname,email) => {
+    try {
+        const existingUser = await GetOauthUser(id);
+        if (existingUser) {
+            throw new Error("User already exists");
+        }
+        const newPlayer = new Oauth({ id, displayname,email, "body": "" });
+        await newPlayer.save();
+
+        return "Oauth Player added";
+    } catch (error) {
+        return error.message;
+    }
+}
+
+const GetOauthUser = (id) => {
+    return new Promise((resolve, reject) => {
+        const existingUser = Oauth.findOne({ id });
+        if (existingUser) {
+            resolve(existingUser);
+        } else {
+            reject("User not found");
+        }
+    });
+};
+
+
+
 
 module.exports = {
     connectDB,
@@ -173,5 +223,7 @@ module.exports = {
     CheckCookie,
     DeleteCookie,
     AddCookie,
-    addBodyDetails
+    addBodyDetails,
+    GetOauthUser,
+    AddOauthUser
 };
