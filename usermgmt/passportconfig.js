@@ -12,9 +12,15 @@ passport.use(new GoogleStrategy({
     prompt: 'consent'
 }, async (accessToken, refreshToken, profile, done) => {
     const email = profile.emails[0].value;
-    console.log(accessToken, refreshToken, profile);
-
-    done(null);
+    const displayname = profile.displayName;
+    const user = {
+        id: profile.id,
+        displayname,
+        email
+    };
+    console.log(user)
+    // Return the user object to Passport
+    done(null, user);
 }));
 
 

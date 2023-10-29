@@ -30,6 +30,10 @@ userrouter.get('/login', (req, res) => {
     res.sendFile(process.env.PROJECT_DIR + '/Webpages' + '/login.html')
 })
 
+userrouter.get('/favicon.ico', (req, res) => {
+    res.sendFile(process.env.PROJECT_DIR + '/Webpages' + '/favicon.png')
+})
+
 userrouter.get('/updateavatar', (req, res) => {
     res.sendFile(process.env.PROJECT_DIR + '/Webpages' + '/updateavatar.html')
 })
