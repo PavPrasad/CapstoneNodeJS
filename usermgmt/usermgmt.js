@@ -147,12 +147,8 @@ userrouter.route('/unityLogin').post((req, res) => {
 userrouter.route('/loginOauth').get((req, res) => {
     const displayName = req.session.displayName;
     const email = req.session.email;
-
-    // Display the user's display name and email
-    res..status(200).send(`<h1>${displayName}</h1><p>${email}</p>`);
-
+    res.status(200).send(`<h1>${displayName}</h1><p>${email}</p>`);
 })
-
 
 userrouter.route('/').get((req, res) => {
     res.sendFile(process.env.PROJECT_DIR + '/Webpages' + '/index.html')
@@ -161,8 +157,6 @@ userrouter.route('/').get((req, res) => {
 /*userrouter.route('/').all((req,res)=> {
     res.status(404).send("Invalid Address");
 })*/
-
-//
 
 module.exports = {
     userrouter
