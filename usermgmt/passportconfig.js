@@ -18,6 +18,7 @@ passport.use(new GoogleStrategy({
         displayname,
         email
     };
+
     console.log(user)
     // Return the user object to Passport
     done(null, user);
