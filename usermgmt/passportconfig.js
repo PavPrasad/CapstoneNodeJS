@@ -15,10 +15,11 @@ passport.use(new GoogleStrategy({
     const email = profile.emails[0].value;
     // Find the user in your database.
     console.log(email);
-    // Return the user to Passport.
+    // Return the user to Passport
+
     //todo handle all user details into mongo use the crud app etc
 
-    done(null, user);
+    done(null);
 }));
 
 

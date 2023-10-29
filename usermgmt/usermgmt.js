@@ -3,6 +3,7 @@ const userrouter = express.Router();
 const crypto = require('crypto');
 userrouter.use(express.json())
 userrouter.use(express.urlencoded({ extended: true }));
+
 const {
     AddUser,
     DeleteUser,
@@ -35,13 +36,11 @@ userrouter.get('/updateavatar', (req, res) => {
 userrouter.get('/model/avatar/:id', (req, res) => {
     console.log(req.params.id)
     res.sendFile(process.env.PROJECT_DIR + '/Models/avatar/' + req.params.id + '.gltf')
-
 })
 userrouter.route('/test').post((req, res) => {
     const data = req.body;
     const task = testdb(data);
     res.status(201).json({ task });
-
 })
 userrouter.route('/deltest').post((req, res) => {
     const data = req.body;
@@ -88,7 +87,6 @@ userrouter.route('/delete').post((req, res) => {
     } else {
         res.status(403).send("Access denied");
     }
-
 });
 
 myttl = "86400000"
@@ -128,15 +126,22 @@ userrouter.route('/unityLogin').post((req, res) => {
                 res.status(200).send("Login Successful");
             } else {
                 res.status(201).send("Please Login, this error must not be visible")
+                DeleteCookie(req.body.username)
+                    .then(() => {
+                        console.log("user", req.body.username, "Has been deleted")
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
             }
         }).catch((error)=>{
-            res.status(404).send("Username or password incorrect");
+            res.status(404).send("cookie incorrect");
         })
 })
 
 
 userrouter.route('/loginOauth').get((req, res) => {
-    res.status(501);
+    res.status(501).send("not built");
 })
 
 
