@@ -12,7 +12,9 @@ const {
     CheckCookie,
     DeleteCookie,
     AddCookie,
-    addBodyDetails
+    addBodyDetails,
+    GetOauthUser,
+    AddOauthUser
 } = require('../crud/crud');
 
 function generateAccessToken(e) {
