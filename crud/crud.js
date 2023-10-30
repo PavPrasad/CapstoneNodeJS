@@ -128,7 +128,9 @@ const CheckCookie = (username, cookie) => {
 
 const addBodyDetails = async (username, password, playerbody) => {
     try {
-        await Player.findOneAndUpdate({ username, password }, { body: playerbody })
+        const data = await Player.findOne({ username, password });
+        data.body = playerbody;
+        await data.save();
         console.log('Document updated successfully.');
     } catch (err) {
         console.error(err);
