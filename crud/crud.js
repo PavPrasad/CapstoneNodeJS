@@ -96,10 +96,10 @@ const VerifyUserLogin = (username, password) => {
     return new Promise(async (resolve, reject) => {
         const existingUser = await Player.findOne({ username, password });
         if (existingUser) {
-            console.log(existingUser)
+            //console.log(existingUser)
             resolve(existingUser);
         } else {
-            console.log("What the ??")
+            //console.log("What the ??")
             reject("Username or passord incorrect");
         }
     });
@@ -115,7 +115,7 @@ const Cookie = mongoose.model("cookiestorage", CookieSchema);
 
 const CheckCookie = (username, cookie) => {
     return new Promise(async (resolve, reject) => {
-        console.log(username, cookie)
+        //console.log(username, cookie)
         const isCookie = await Cookie.findOne({ username, cookie });
         if (isCookie) {
             //we dont check ttl here
@@ -131,7 +131,7 @@ const addBodyDetails = async (username, password, playerbody) => {
         const data = await Player.findOne({ username, password });
         data.body = playerbody;
         await data.save();
-        console.log('Document updated successfully.');
+        //console.log('Document updated successfully.');
     } catch (err) {
         console.error(err);
     };
@@ -145,7 +145,7 @@ const AddCookie = (username, cookie, ttl) => {
             // Check if the same user has a cookie and delete it if it exists
             if (isCookie) {
                 await Cookie.deleteOne({ username });
-                console.log("THIS" + isCookie)
+                //console.log("THIS" + isCookie)
             }
             const d = new Date();
             d.setTime(d.getTime() + Number(ttl));
