@@ -58,6 +58,26 @@ userrouter.route('/deltest').post((req, res) => {
         });
 })
 
+userrouter.get('/download', (req, res) => {
+    res.send(`<!DOCTYPE html>
+<html>
+<head>
+  <title>Download Pesumetaversity VR Application</title>
+</head>
+<body>
+  <h1>Download Files</h1>
+  <p>This page provides links to download two files from a Google Cloud Platform (GCP) bucket.</p>
+  <p>Please note that these files are provided as-is, without any warranty or guarantee of working.</p>
+  <p>Use the SteamVR Runtime with SteamVR Enabled if the standard runtime does not work</p>
+  <ul>
+    <li><a href="${process.env.GCP_DOWNLOAD_URL_STANDARD}">Standard VR runtime</a></li>
+    <li><a href="${process.env.GCP_DOWNLOAD_URL_STEAMVR}">SteamVR Runtime application</a></li>
+  </ul>
+</body>
+</html>`);
+});
+
+
 userrouter.put('/updateavatar', (req, res) => {
     VerifyUserLogin(req.body.username, req.body.password)
         .then((message) => {
