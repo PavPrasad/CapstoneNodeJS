@@ -118,7 +118,7 @@ userrouter.route('/login').post((req, res) => {
         .then((message) => {
             if (message.body === "") {
                 res.status(201).send("please enter avatar details before entering");
-            } else {
+            } else +
                 AddCookie(message.username, generateAccessToken(message.username), myttl)
                     .then((message2) => {
                         console.log(message2.cookie)
@@ -140,7 +140,7 @@ userrouter.route('/login').post((req, res) => {
 );
 
 userrouter.route('/unityLogin').post((req, res) => {
-    CheckCookie(req.body.username, req.body.cookie)
+    CheckCookie(req.body.username, req.body.Cookie)
         .then((cookiedetails) => {
             console.log(cookiedetails);
             const a = new Date();
