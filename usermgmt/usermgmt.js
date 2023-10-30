@@ -14,9 +14,6 @@ const {
     AddCookie,
     addBodyDetails
 } = require('../crud/crud');
-const { REFUSED } = require('dns');
-
-
 
 function generateAccessToken(e) {
     let t = Date.now().toString(), a = crypto.createHash("md5").update(e).digest("hex"),
