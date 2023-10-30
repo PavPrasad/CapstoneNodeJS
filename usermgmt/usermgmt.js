@@ -75,7 +75,7 @@ userrouter.get('/download', (req, res) => {
 });
 
 
-userrouter.put('/updateavatar', (req, res) => {
+userrouter.post('/updateavatar', (req, res) => {
     VerifyUserLogin(req.body.username, req.body.password)
         .then((message) => {
             addBodyDetails(message.username,message.password,req.body.body)
