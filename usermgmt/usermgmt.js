@@ -156,15 +156,22 @@ userrouter.route('/unityLogin').post((req, res) => {
                         console.log(error);
                     });
             }
-        }).catch((error)=>{
+        }).catch((error) => {
+
             res.status(404).send("cookie incorrect");
         })
 })
 
 
 userrouter.route('/loginOauth').get((req, res) => {
-    res.status(200).send(`<h1>${req.user}</h1><p>"HI"</p>`);
+    //just have the user enter the details temporarily
+    res.status(200).sendFile(process.env.PROJECT_DIR + '/Webpages' + '/oauthlogin.html');
 })
+
+userrouter.route('/loginOauth').post((req, res) => {
+    res.status(501).send('not implemented');
+})
+
 
 userrouter.route('/').get((req, res) => {
     res.sendFile(process.env.PROJECT_DIR + '/Webpages' + '/index.html')
