@@ -3,15 +3,6 @@ const mongoose = require('mongoose')
 const session = require('express-session')
 const MongoStore = require('connect-mongodb-session')(session);
 
-const playerSchema = new mongoose.Schema({
-    username: String,
-    password: String,
-    body: String,
-})
-
-const Player = mongoose.model('player', playerSchema);
-
-
 const connectDB = async () => {
     await mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true })
     return session({
@@ -21,21 +12,18 @@ const connectDB = async () => {
         store: new MongoStore({
             databaseName: 'sessions',
             uri: process.env.MONGO_URI,
-            ttl:  60 * 60,
+            ttl: 60 * 60,
             autoRemove: 'native'
         })
     })
 }
-/*
-const MyModel = mongoose.model('Test', new mongoose.Schema({ username: String, password: String }));
-const testdb = async (data) => {
-    console.log(data)
-    const test = new MyModel(data);
-    await test.save()
-    console.log(test)
-    return test;
-}
-*/
+
+const playerSchema = new mongoose.Schema({
+    username: String,
+    password: String,
+    body: String,
+})
+const Player = mongoose.model('player', playerSchema);
 const deletetest = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -50,7 +38,6 @@ const deletetest = (data) => {
         }
     });
 };
-
 const GetUser = (username) => {
     return new Promise((resolve, reject) => {
         const existingUser = Player.findOne({ username });
@@ -61,7 +48,6 @@ const GetUser = (username) => {
         }
     });
 };
-
 const AddUser = async (username, password) => {
     try {
         const existingUser = await GetUser(username);
@@ -90,8 +76,6 @@ const DeleteUser = (username, password) => {
         }
     });
 };
-
-
 const VerifyUserLogin = (username, password) => {
     return new Promise(async (resolve, reject) => {
         const existingUser = await Player.findOne({ username, password });
@@ -104,7 +88,6 @@ const VerifyUserLogin = (username, password) => {
         }
     });
 }
-//add schema to store cookie details and to verify details
 
 const CookieSchema = new mongoose.Schema({
     username: String,
@@ -112,7 +95,6 @@ const CookieSchema = new mongoose.Schema({
     expiry: Date
 })
 const Cookie = mongoose.model("cookiestorage", CookieSchema);
-
 const CheckCookie = (username, cookie) => {
     return new Promise(async (resolve, reject) => {
         //console.log(username, cookie)
@@ -125,7 +107,6 @@ const CheckCookie = (username, cookie) => {
         }
     });
 }
-
 const addBodyDetails = async (username, password, playerbody) => {
     try {
         const data = await Player.findOne({ username, password });
@@ -136,7 +117,6 @@ const addBodyDetails = async (username, password, playerbody) => {
         console.error(err);
     };
 }
-
 const AddCookie = (username, cookie, ttl) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -181,10 +161,9 @@ const OauthSchema = new mongoose.Schema({
     id : String,
     displayname: String,
     email: String,
-    body:String
+    body: String
 })
 const Oauth = mongoose.model("OauthStorage", OauthSchema);
-
 const AddOauthUser = async(id,displayname,email) => {
     try {
         const existingUser = await GetOauthUser(id);
@@ -199,7 +178,6 @@ const AddOauthUser = async(id,displayname,email) => {
         return error.message;
     }
 }
-
 const GetOauthUser = (id) => {
     return new Promise((resolve, reject) => {
         const existingUser = Oauth.findOne({ id });
@@ -210,6 +188,56 @@ const GetOauthUser = (id) => {
         }
     });
 };
+
+const TimeOauthSchema = new mongoose.Schema({
+    id: String,
+    displayname: String,
+    email: String,
+    Expiry: Date
+})
+const TempOauth = mongoose.model("TempOauth", TimeOauthSchema);
+const AddTempOauthUser = async (id, displayname, email,ttl) => {
+    try {
+        const existingUser = await GetOauthUser(id);
+        if (existingUser) {
+            throw new Error(" Temporary user already exists");
+        }
+        const d = new Date();
+        d.setTime(d.getTime() + Number(ttl));
+        const expiry = d;
+
+        const newPlayer = new tempOauth({ id, displayname, email,expiry });
+        await newPlayer.save();
+
+        return "Temp Oauth Player added";
+    } catch (error) {
+        return error.message;
+    }
+}
+const GetTempOauthUser = (id) => {
+    return new Promise((resolve, reject) => {
+        const existingUser = TempOauth.findOne({ id });
+        if (existingUser) {
+            resolve(existingUser);
+        } else {
+            reject("User not found");
+        }
+    });
+};
+const DeleteTempOauthUser = (id, displayname, email) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const isCookie = await GetOauthUser(id);
+            // Check if the same user has a cookie and delete it if it exists
+            if (isCookie) {
+                await Cookie.deleteOne({ id, displayname, email });
+                resolve();
+            }
+        } catch (error) {
+            reject(error);
+        }
+    });
+}
 
 
 
@@ -226,5 +254,8 @@ module.exports = {
     AddCookie,
     addBodyDetails,
     GetOauthUser,
-    AddOauthUser
+    AddOauthUser,
+    AddTempOauthUser,
+    GetTempOauthUser,
+    DeleteTempOauthUser
 };

@@ -30,13 +30,27 @@
     </style>
 </head>
 <body>
-    <h1>Please Register your body and get the auth token for unity application</h1>
+    <h1>First time login form or avatar update form, enter display name and email and avatar url</h1>
     <form action="loginOauth" method="POST" enctype="application/x-www-form-urlencoded">
         <label for="username">Display Name:</label>
         <input type="text" id="username" name="username" required><br>
 
         <label for="password">email:</label>
-        <input type="password" id="password" name="password" required><br>
+        <input type="text" id="password" name="password" required><br>
+        <b>obtain avatar url from <a href="https://readyplayer.me/">Ready Player me</a></b>
+        <br />
+        <label for="avatar-url">Avatar URL:</label>
+        <input type="text" id="avatar-url" name="avatar-url" required><br>
+
+        <button type="submit">Register Avatar</button>
+    </form>
+    <h1>login form</h1>
+    <form action="loginOauth" method="POST" enctype="application/x-www-form-urlencoded">
+        <label for="username">Display Name:</label>
+        <input type="text" id="username" name="username" required><br>
+
+        <label for="password">email:</label>
+        <input type="text" id="password" name="password" required><br>
         <b>obtain avatar url from <a href="https://readyplayer.me/">Ready Player me</a></b>
         <br />
         <label for="avatar-url">Avatar URL:</label>

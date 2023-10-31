@@ -1,6 +1,6 @@
 const express = require('express');
 const passport = require('passport');
-const {GetOauthUser, AddOauthUser } = require('../crud/crud')
+const { GetOauthUser, GetTempOauthUser, AddTempOauthUser } = require('../crud/crud')
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
 passport.use(new GoogleStrategy({
@@ -10,7 +10,7 @@ passport.use(new GoogleStrategy({
     scope: ['profile', 'email'],
     accessType: 'offline',
     prompt: 'consent'
-}, async (accessToken, refreshToken, profile, done) => {
+}, async (profile, done) => {
     const email = profile.emails[0].value;
     const displayname = profile.displayName;
     const user = {
@@ -18,15 +18,17 @@ passport.use(new GoogleStrategy({
         displayname,
         email
     };
+    const ttl = 3600;
     GetOauthUser(user.id)
         .then((message) => {
-            //person already present, nothing
+            //person already present
+            console.log(message);
             done(null, message);
         })
         .catch((error) => {
-            const msg = AddOauthUser(user.id, user.displayname, user.email);
+            const msg = AddTempOauthUser(user.id, user.displayname, user.email,ttl);
             console.log(msg);
-            GetOauthUser(user.id).then((message) => { done(null, message) }).catch((err) => { });
+            GetTempOauthUser(user.id).then((message) => { done(null, message) }).catch((err) => { });
         })
     console.log(`done for ${user.displayname} `);
 }));
