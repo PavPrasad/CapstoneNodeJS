@@ -1,6 +1,6 @@
 const express = require('express');
 const passport = require('passport');
-const { GetOauthUser, GetTempOauthUser, AddOauthUser } = require('../crud/crud')
+const { GetOauthUser, GetTempOauthUser, AddTempOauthUser } = require('../crud/crud')
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
 passport.use(new GoogleStrategy({
@@ -11,8 +11,26 @@ passport.use(new GoogleStrategy({
     accessType: 'offline',
     prompt: 'consent'
 }, async (profile, done) => {
-
-    done(null,profile);
+        const email = profile.emails[0].value;
+        const displayname = profile.displayName;
+        const user = {
+            id: profile.id,
+            displayname,
+            email
+        };
+        const ttl = 3600;
+        GetOauthUser(user.id)
+            .then((message) => {
+                //person already present
+                console.log(message);
+                done(null, message);
+            })
+            .catch((error) => {
+                const msg = AddTempOauthUser(user.id, user.displayname, user.email, ttl);
+                console.log(msg);
+                GetTempOauthUser(user.id).then((message) => { done(null, message) }).catch((err) => { });
+            })
+        console.log(`done for ${user.displayname} `);
 }));
 /*
 passport.serializeUser(function (user, cb) {
@@ -57,4 +75,4 @@ GetOauthUser(user.id)
         req.session.message = msg;
         done(null, msg);
     })*//*
-console.log(`done for ${user.displayname} `);*/
+console.log(`done for ${user.displayname} `);git */
