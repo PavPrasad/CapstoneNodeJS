@@ -176,8 +176,8 @@ userrouter.route('/loginOauth').post((req, res) => {
 
 userrouter.route('/loginOauth').get((req, res) => {
     //just have the user enter the details temporarily
-    console.log("YEAH", req.session.user);
-    res.status(200).send(req.session.uesr);
+    console.log("YEAH", req.session.message);
+    res.status(200).send(req.session.message);
 })
 
 userrouter.route('/loginOauth').post((req, res) => {
