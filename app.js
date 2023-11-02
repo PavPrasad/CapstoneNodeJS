@@ -61,4 +61,5 @@ app.get('/test',(req, res) => {
         req.session.user = " what is this string just store data";
         req.session.save();
     }
+    res.status(201).send();
 })
