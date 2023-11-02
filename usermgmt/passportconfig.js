@@ -19,7 +19,7 @@ passport.use(new GoogleStrategy({
         email
     };
     const ttl = 3600;
-    req.session.user = user;
+/*    req.session.user = user;
     console.log(req.session.user);
     GetOauthUser(user.id)
         .then((message) => {
@@ -32,7 +32,7 @@ passport.use(new GoogleStrategy({
             console.log(msg);
             req.session.message = msg;
             done(null, msg);
-        })
+        })*/
     console.log(`done for ${user.displayname} `);
 }));
 
