@@ -23,7 +23,9 @@ const httpsServer = https.createServer({
 });
 */
 app.use(userrouter);
-app.get('/auth/google',passport.authenticate('google'));
+app.get('/auth/google', (req, res) => {
+    passport.authenticate('google')
+});
 app.get('/auth/google/callback', passport.authenticate('google', {
     successRedirect: '/',
     failureRedirect: '/loginOauth'
