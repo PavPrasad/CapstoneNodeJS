@@ -11,9 +11,9 @@ passport.use(new GoogleStrategy({
     accessType: 'offline',
     prompt: 'consent'
 }, async (profile, done) => {
-    console.log(profile);
+/*    console.log(profile);
     req.session.message = profile;
-    /*
+    *//*
     const email = profile.emails[0].value;
     const displayname = profile.displayName;
     const user = {
@@ -35,9 +35,9 @@ passport.use(new GoogleStrategy({
             console.log(msg);
             req.session.message = msg;
             done(null, msg);
-        })*/
-    console.log(`done for ${user.displayname} `);
-    done(null);
+        })*//*
+    console.log(`done for ${user.displayname} `);*/
+    done(null,profile);
 }));
 
 passport.serializeUser(function (user, cb) {
