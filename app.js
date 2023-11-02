@@ -35,9 +35,8 @@ start();
 });
 */
 app.use(passport.initialize());
-
-
 httpsServer.listen(443, console.log("Listening on https port, yay were live"));
+
 app.use(userrouter);
 app.get('/auth/google', (req, res) => {
     if (!req.session.user) {
@@ -53,3 +52,13 @@ app.get('/auth/google/callback', passport.authenticate('google', {
     successRedirect: '/',
     failureRedirect: '/loginOauth'
 }));
+app.use('/test').get((req, res) => {
+    if (!req.session.user) {
+        req.session.user = {}
+        req.session.save();
+    }
+    else {
+        req.session.user = " what is this string just store data";
+        req.session.save();
+    }
+})
