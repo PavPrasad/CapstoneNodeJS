@@ -12,7 +12,6 @@ passport.use(new GoogleStrategy({
     prompt: 'consent'
 }, async (accessToken, refreshToken, profile, done) => {
     req.session.message = profile;
-
     const email = profile.emails[0].value;
     const displayname = profile.displayName;
     const user = {
@@ -23,7 +22,8 @@ passport.use(new GoogleStrategy({
     const ttl = 3600;
     req.session.user = user;
     console.log(req.session.user);
-    GetOauthUser(user.id)
+    done(null, user);
+/*    GetOauthUser(user.id)
         .then((message) => {
             req.session.message = message;
             console.log(message);
@@ -34,8 +34,7 @@ passport.use(new GoogleStrategy({
             console.log(msg);
             req.session.message = msg;
             done(null, msg);
-        })
-    console.log(`done for ${user.displayname} `);
+        })*/
     console.log(`done for ${user.displayname} `);
 
 }));
