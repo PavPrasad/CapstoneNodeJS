@@ -28,7 +28,9 @@ app.get('/auth/google', (req, res) => {
         req.session.user = {}
         req.session.save();
     }
-    req.session.user = " what is this string just store data";
+    else {
+        req.session.user = " what is this string just store data";
+    }
     passport.authenticate('google')
 });
 app.get('/auth/google/callback', passport.authenticate('google', {
