@@ -37,6 +37,7 @@ passport.use(new GoogleStrategy({
             done(null, msg);
         })*/
     console.log(`done for ${user.displayname} `);
+    done(null);
 }));
 
 passport.serializeUser(function (user, cb) {
