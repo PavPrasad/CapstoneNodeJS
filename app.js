@@ -18,9 +18,9 @@ const httpsServer = https.createServer({
     key: privateKey,
 }, app);
 
-const start = async () => {
+const start =  () => {
     try {
-        const sessionvar = await connectDB();
+        const sessionvar =  connectDB();
         app.use(sessionvar);
         //app.listen(3000,console.log("Started server"))
 
