@@ -22,7 +22,7 @@ const httpsServer = https.createServer({
     res.redirect(`https://${req.headers.host}${req.url}`);
 });
 */
-app.use(userrouter);
+
 app.get('/auth/google', (req, res) => {
     if (!req.session.user) {
         req.session.user = {}
@@ -52,3 +52,4 @@ const start = async () => {
 httpsServer.listen(443,console.log("Listening on https port, yay were live"));
 
 start();
+app.use(userrouter);
