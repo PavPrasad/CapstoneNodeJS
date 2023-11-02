@@ -11,13 +11,14 @@ passport.use(new GoogleStrategy({
     accessType: 'offline',
     prompt: 'consent'
 }, async (profile, done) => {
-        const email = profile.emails[0].value;
+        console.log(profile);
+        /*const email = profile.emails[0].value;
         const displayname = profile.displayName;
         const user = {
             id: profile.id,
             displayname,
             email
-        };
+        };*/
         const ttl = 3600;
         GetOauthUser(user.id)
             .then((message) => {
@@ -30,7 +31,8 @@ passport.use(new GoogleStrategy({
                 console.log(msg);
                 GetTempOauthUser(user.id).then((message) => { done(null, message) }).catch((err) => { });
             })
-        console.log(`done for ${user.displayname} `);
+    console.log(`done for ${user.displayname} `);
+
 }));
 /*
 passport.serializeUser(function (user, cb) {
