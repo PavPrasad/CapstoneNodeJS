@@ -11,7 +11,8 @@ const connectDB = async () => {
         saveUninitialized: true,
         cookie: {
             secure: true,
-            maxAge:60000
+            maxAge: 60000,
+            user :{}
         },
         store: new MongoStore({
             databaseName: 'sessions',
