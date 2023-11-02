@@ -9,6 +9,10 @@ const connectDB = async () => {
         secret: process.env.SECRET_SESSION_KEY,
         resave: false,
         saveUninitialized: true,
+        cookie: {
+            secure: true,
+            maxAge:60000
+        },
         store: new MongoStore({
             databaseName: 'sessions',
             uri: process.env.MONGO_URI,
