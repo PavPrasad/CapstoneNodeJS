@@ -1,6 +1,6 @@
 const express = require('express');
 const passport = require('passport');
-const { GetOauthUser, GetTempOauthUser, AddTempOauthUser } = require('../crud/crud')
+const { GetOauthUser, GetTempOauthUser, AddOauthUser } = require('../crud/crud')
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
 passport.use(new GoogleStrategy({
@@ -19,16 +19,18 @@ passport.use(new GoogleStrategy({
         email
     };
     const ttl = 3600;
+    req.session.user = user;
     GetOauthUser(user.id)
         .then((message) => {
-            //person already present
+            req.session.message = message;
             console.log(message);
             done(null, message);
         })
         .catch((error) => {
-            const msg = AddTempOauthUser(user.id, user.displayname, user.email,ttl);
+            const msg = AddOauthUser(user.id, user.displayname, user.email,ttl);
             console.log(msg);
-            GetTempOauthUser(user.id).then((message) => { done(null, message) }).catch((err) => { });
+            req.session.message = msg;
+            done(null, msg);
         })
     console.log(`done for ${user.displayname} `);
 }));

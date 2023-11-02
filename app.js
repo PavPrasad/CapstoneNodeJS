@@ -23,7 +23,10 @@ const httpsServer = https.createServer({
 });
 */
 app.use(userrouter);
-app.get('/auth/google', passport.authenticate('google'));
+app.get('/auth/google', (req, res) => {
+    req.session.returnTo = req.originalUrl;
+    passport.authenticate('google')
+});
 app.get('/auth/google/callback', passport.authenticate('google', {
     successRedirect: '/',
     failureRedirect: '/loginOauth'
@@ -33,7 +36,7 @@ app.use(passport.initialize());
 const start = async () => {
     try {
         const sessionvar = await connectDB()
-        app.use(sessionvar);
+        app.use(sessionvar);``
         //app.listen(3000,console.log("Started server"))
     }
     catch (error) {

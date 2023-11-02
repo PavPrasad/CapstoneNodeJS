@@ -31,7 +31,7 @@ userrouter.get('/login', (req, res) => {
 })
 
 userrouter.get('/favicon.ico', (req, res) => {
-    res.sendFile(process.env.PROJECT_DIR + '/Webpages' + '/favicon.png')
+    res.sendFile(process.env.PROJECT_DIR + '/Webpages' + '/favicon.ico')
 })
 
 userrouter.get('/updateavatar', (req, res) => {
@@ -165,9 +165,19 @@ userrouter.route('/unityLogin').post((req, res) => {
 })
 
 
+userrouter.route('/signupOauth').post((req, res) => {
+    console.log(req.body.username, req.body.password);
+
+})
+
+userrouter.route('/loginOauth').post((req, res) => {
+    console.log(req.body.username, req.body.password);
+})
+
 userrouter.route('/loginOauth').get((req, res) => {
     //just have the user enter the details temporarily
-    res.status(200).sendFile(process.env.PROJECT_DIR + '/Webpages' + '/oauthlogin.html');
+    console.log("YEAH", req.session.user);
+    res.status(200).send(req.session.uesr);
 })
 
 userrouter.route('/loginOauth').post((req, res) => {
