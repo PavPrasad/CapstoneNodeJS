@@ -18,11 +18,27 @@ const httpsServer = https.createServer({
     key: privateKey,
 }, app);
 
+const start = async () => {
+    try {
+        const sessionvar = await connectDB();
+        app.use(sessionvar);
+        //app.listen(3000,console.log("Started server"))
+
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+start();
 /*app.all('*', (req, res, next) => {
     res.redirect(`https://${req.headers.host}${req.url}`);
 });
 */
+app.use(passport.initialize());
 
+
+httpsServer.listen(443, console.log("Listening on https port, yay were live"));
+app.use(userrouter);
 app.get('/auth/google', (req, res) => {
     if (!req.session.user) {
         req.session.user = {}
@@ -37,19 +53,3 @@ app.get('/auth/google/callback', passport.authenticate('google', {
     successRedirect: '/',
     failureRedirect: '/loginOauth'
 }));
-app.use(passport.initialize());
-
-const start = async () => {
-    try {
-        const sessionvar = await connectDB();
-        app.use(sessionvar);
-        //app.listen(3000,console.log("Started server"))
-    }
-    catch (error) {
-        console.log(error);
-    }
-}
-httpsServer.listen(443,console.log("Listening on https port, yay were live"));
-
-start();
-app.use(userrouter);
