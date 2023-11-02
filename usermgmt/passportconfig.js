@@ -11,32 +11,7 @@ passport.use(new GoogleStrategy({
     accessType: 'offline',
     prompt: 'consent'
 }, async (profile, done) => {
-/*    console.log(profile);
-    req.session.message = profile;
-    *//*
-    const email = profile.emails[0].value;
-    const displayname = profile.displayName;
-    const user = {
-        id: profile.id,
-        displayname,
-        email
-    };
-    const ttl = 3600;
-   req.session.user = user;
-    console.log(req.session.user);
-    GetOauthUser(user.id)
-        .then((message) => {
-            req.session.message = message;
-            console.log(message);
-            done(null, message);
-        })
-        .catch((error) => {
-            const msg = AddOauthUser(user.id, user.displayname, user.email,ttl);
-            console.log(msg);
-            req.session.message = msg;
-            done(null, msg);
-        })*//*
-    console.log(`done for ${user.displayname} `);*/
+
     done(null,profile);
 }));
 /*
@@ -56,3 +31,30 @@ passport.deserializeUser(function (user, cb) {
 module.exports = {
     passport
 };
+
+/*    console.log(profile);
+    req.session.message = profile;
+    *//*
+const email = profile.emails[0].value;
+const displayname = profile.displayName;
+const user = {
+    id: profile.id,
+    displayname,
+    email
+};
+const ttl = 3600;
+req.session.user = user;
+console.log(req.session.user);
+GetOauthUser(user.id)
+    .then((message) => {
+        req.session.message = message;
+        console.log(message);
+        done(null, message);
+    })
+    .catch((error) => {
+        const msg = AddOauthUser(user.id, user.displayname, user.email,ttl);
+        console.log(msg);
+        req.session.message = msg;
+        done(null, msg);
+    })*//*
+console.log(`done for ${user.displayname} `);*/
