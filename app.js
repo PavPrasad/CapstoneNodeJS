@@ -52,7 +52,7 @@ app.get('/auth/google/callback', passport.authenticate('google', {
     successRedirect: '/',
     failureRedirect: '/loginOauth'
 }));
-app.use('/test').get((req, res) => {
+app.get('/test',(req, res) => {
     if (!req.session.user) {
         req.session.user = {}
         req.session.save();
