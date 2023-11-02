@@ -39,7 +39,7 @@ passport.use(new GoogleStrategy({
     console.log(`done for ${user.displayname} `);*/
     done(null,profile);
 }));
-
+/*
 passport.serializeUser(function (user, cb) {
     process.nextTick(function () {
         cb(null, { id: user.id, email: user.email, displayname: user.displayname });
@@ -51,7 +51,7 @@ passport.deserializeUser(function (user, cb) {
         return cb(null, user);
     });
 });
-
+*/
 
 module.exports = {
     passport
