@@ -26,6 +26,7 @@ app.use(userrouter);
 app.get('/auth/google', (req, res) => {
     if (!req.session.user) {
         req.session.user = {}
+        req.session.save();
     }
     req.session.user = " what is this string just store data";
     passport.authenticate('google')
