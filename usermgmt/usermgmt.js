@@ -123,7 +123,6 @@ userrouter.route('/login').post((req, res) => {
             } else {
                 AddCookie(message.username, generateAccessToken(message.username), myttl)
                     .then((message2) => {
-                        console.log(message2.cookie)
                         const data = {
                             username: message.username, cookie: message2.cookie,
                             ttl: myttl, body: message.body
