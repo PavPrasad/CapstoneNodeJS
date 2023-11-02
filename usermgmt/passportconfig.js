@@ -21,9 +21,8 @@ passport.use(new GoogleStrategy({
     };
     const ttl = 3600;
     req.session.message = profile;
-    req.session.user = user;
     req.session.save();
-    console.log(req.session.user);
+    console.log(req.session.profile);
     done(null, user);
 /*    GetOauthUser(user.id)
         .then((message) => {

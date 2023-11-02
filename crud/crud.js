@@ -11,13 +11,14 @@ const connectDB =  () => {
         saveUninitialized: true,
         cookie: {
             secure: true,
-            maxAge: 30
+            maxAge: 1000*30
         },
         store: new MongoStore({
             databaseName: 'sessions',
             uri: process.env.MONGO_URI,
-            ttl: 30,
-            autoRemove: 'native'
+            ttl: 5,
+            autoRemove: 'interval',
+            autoRemoveInterval: 10
         })
     })
 }
