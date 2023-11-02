@@ -40,11 +40,12 @@ httpsServer.listen(443, console.log("Listening on https port, yay were live"));
 app.use(userrouter);
 app.get('/auth/google', (req, res) => {
     if (!req.session.user) {
-        req.session.user = {}
+        req.session.user = " what is this string just store data"
         req.session.save();
     }
-    else {
-        req.session.user = " what is this string just store data";
+    if (!req.session.message) {
+        req.session.message = "more data";
+        req.session.save();
     }
     passport.authenticate('google')
 });

@@ -11,7 +11,7 @@ passport.use(new GoogleStrategy({
     accessType: 'offline',
     prompt: 'consent'
 }, async (accessToken, refreshToken, profile, done) => {
-    req.session.message = profile;
+
     const email = profile.emails[0].value;
     const displayname = profile.displayName;
     const user = {
@@ -20,7 +20,9 @@ passport.use(new GoogleStrategy({
         email
     };
     const ttl = 3600;
+    req.session.message = profile;
     req.session.user = user;
+    req.session.save();
     console.log(req.session.user);
     done(null, user);
 /*    GetOauthUser(user.id)
