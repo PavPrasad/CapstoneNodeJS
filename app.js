@@ -38,11 +38,7 @@ app.use(passport.authenticate('session'));
 app.use(userrouter);
 app.get('/auth/google', (req, res) => {
     if (!req.session.user) {
-        req.session.user = " what is this string just store data"
-        req.session.save();
-    }
-    if (!req.session.message) {
-        req.session.message = "more data";
+        req.session.user = {};
         req.session.save();
     }
     passport.authenticate('google')
@@ -54,10 +50,6 @@ app.get('/auth/google/callback', passport.authenticate('google', {
 app.get('/test', (req, res) => {
     if (!req.session.user) {
         req.session.user = " what is this string just store data"
-        req.session.save();
-    }
-    if (!req.session.message) {
-        req.session.message = "more data";
         req.session.save();
     }
     res.status(201).send(req.session.user," ",req.session.message);
