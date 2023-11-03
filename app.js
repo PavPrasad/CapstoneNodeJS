@@ -43,7 +43,7 @@ app.get('/auth/google', (req, res) => {
     }
     passport.authenticate('google')
     res.status(201).send();
-;
+});
 app.get('/auth/google/callback', passport.authenticate('google', {
     successRedirect: '/',
     failureRedirect: '/loginOauth'
