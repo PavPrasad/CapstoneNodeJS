@@ -20,9 +20,9 @@ passport.use(new GoogleStrategy({
         email
     };
     const ttl = 3600;
-    req.session.user = user;
+/*    req.session.user = user;
     req.session.save();
-    console.log(req.session.user);
+    console.log(req.session.user);*/
     done(null, user);
 /*    GetOauthUser(user.id)
         .then((message) => {
