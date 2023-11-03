@@ -52,14 +52,13 @@ app.get('/auth/google/callback', passport.authenticate('google', {
     failureRedirect: '/loginOauth'
 }));
 app.get('/test', (req, res) => {
-    req.cookie('user','what is this string i cant even')
-/*    if (!req.session.user) {
+    if (!req.session.user) {
         req.session.user = " what is this string just store data"
         req.session.save();
     }
     if (!req.session.message) {
         req.session.message = "more data";
         req.session.save();
-    }*/
+    }
     res.status(201).send(req.session.user," ",req.session.message);
 })
