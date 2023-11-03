@@ -30,12 +30,10 @@ const start =  () => {
     }
 }
 start();
-/*app.all('*', (req, res, next) => {
-    res.redirect(`https://${req.headers.host}${req.url}`);
-});
-*/
 app.use(passport.initialize());
 httpsServer.listen(443, console.log("Listening on https port, yay were live"));
+
+app.use(passport.authenticate('session'));
 
 app.use(userrouter);
 app.get('/auth/google', (req, res) => {
@@ -53,14 +51,15 @@ app.get('/auth/google/callback', passport.authenticate('google', {
     successRedirect: '/',
     failureRedirect: '/loginOauth'
 }));
-app.get('/test',(req, res) => {
-    if (!req.session.user) {
-        req.session.user = {}
+app.get('/test', (req, res) => {
+    req.cookies('user','what is this string i cant even')
+/*    if (!req.session.user) {
+        req.session.user = " what is this string just store data"
         req.session.save();
     }
-    else {
-        req.session.user = " what is this string just store data";
+    if (!req.session.message) {
+        req.session.message = "more data";
         req.session.save();
-    }
-    res.status(201).send(req.session.user);
+    }*/
+    res.status(201).send(req.session.user," ",req.session.message);
 })
