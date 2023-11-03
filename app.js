@@ -33,7 +33,7 @@ start();
 app.use(passport.initialize());
 httpsServer.listen(443, console.log("Listening on https port, yay were live"));
 
-app.use(passport.authenticate('session'));
+//app.use(passport.authenticate('session'));
 
 app.use(userrouter);
 app.get('/auth/google', (req, res) => {
