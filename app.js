@@ -22,8 +22,6 @@ const start =  () => {
     try {
         const sessionvar =  connectDB();
         app.use(sessionvar);
-        //app.listen(3000,console.log("Started server"))
-
     }
     catch (error) {
         console.log(error);
@@ -47,13 +45,6 @@ app.get('/auth/google',
     res.status(201).send();
 });
 app.get('/auth/google/callback', passport.authenticate('google', {
-    successRedirect: '/',
-    failureRedirect: '/loginOauth'
+    successRedirect: '/loginOauth',
+    failureRedirect: '/'
 }));
-app.get('/test', (req, res) => {
-    if (!req.session.user) {
-        req.session.user = " what is this string just store data"
-        req.session.save();
-    }
-    res.status(201).send(req.session.user," ",req.session.message);
-})
