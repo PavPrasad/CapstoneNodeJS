@@ -260,8 +260,5 @@ module.exports = {
     AddCookie,
     addBodyDetails,
     GetOauthUser,
-    AddOauthUser,
-    AddTempOauthUser,
-    GetTempOauthUser,
-    DeleteTempOauthUser
+    AddOauthUser
 };
