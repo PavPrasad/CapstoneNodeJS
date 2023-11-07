@@ -194,6 +194,7 @@ const GetOauthUser = (id) => {
     });
 };
 
+/*
 const TimeOauthSchema = new mongoose.Schema({
     id: String,
     displayname: String,
@@ -243,7 +244,7 @@ const DeleteTempOauthUser = (id, displayname, email) => {
         }
     });
 }
-
+*/
 
 
 

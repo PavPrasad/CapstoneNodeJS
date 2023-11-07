@@ -31,6 +31,8 @@ start();
 app.use(passport.initialize());
 httpsServer.listen(443, console.log("Listening on https port, yay were live"));
 
+app.set('view engine', 'ejs');
+
 //app.use(passport.authenticate('session'));
 
 app.use(userrouter);

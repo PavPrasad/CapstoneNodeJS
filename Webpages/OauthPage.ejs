@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Welcome <%= req.session.passport.user.displayName %></title>
+</head>
+<body>
+    <h1>Enter avatar details if not entered</h1>
+    <form action="signupOauth" method="POST" enctype="application/x-www-form-urlencoded">
+        <b>obtain avatar url from <a href="https://readyplayer.me/">Ready Player me</a></b>
+        <br />
+        <label for="avatar-url">Avatar URL:</label>
+        <input type="text" id="avatar-url" name="avatar-url" required><br>
+
+        <button type="submit">Register Avatar</button>
+    </form>
+</body>
+</html>

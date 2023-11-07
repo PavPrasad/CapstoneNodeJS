@@ -3,6 +3,8 @@ const userrouter = express.Router();
 const crypto = require('crypto');
 userrouter.use(express.json())
 userrouter.use(express.urlencoded({ extended: true }));
+let ejs = require('ejs');
+
 
 const {
     AddUser,
@@ -58,24 +60,8 @@ userrouter.route('/deltest').post((req, res) => {
 })
 
 userrouter.get('/download', (req, res) => {
-    res.send(`<!DOCTYPE html>
-<html>
-<head>
-  <title>Download Pesumetaversity VR Application</title>
-</head>
-<body>
-  <h1>Download Files</h1>
-  <p>This page provides links to download two files from a Google Cloud Platform (GCP) bucket.</p>
-  <p>Please note that these files are provided as-is, without any warranty or guarantee of working.</p>
-  <p>Use the SteamVR Runtime with SteamVR Enabled if the standard runtime does not work</p>
-  <ul>
-    <li><a href="${process.env.GCP_DOWNLOAD_URL_STANDARD}">Standard VR runtime</a></li>
-    <li><a href="${process.env.GCP_DOWNLOAD_URL_STEAMVR}">SteamVR Runtime application</a></li>
-  </ul>
-</body>
-</html>`);
+    res.render(process.env.PROJECT_DIR + '/Webpages' + '/download.ejs');
 });
-
 
 userrouter.post('/updateavatar', (req, res) => {
     VerifyUserLogin(req.body.username, req.body.password)
@@ -169,14 +155,13 @@ userrouter.route('/signupOauth').post((req, res) => {
 
 })
 
-userrouter.route('/loginOauth').post((req, res) => {
-    console.log(req.body.username, req.body.password);
-})
-
 userrouter.route('/loginOauth').get((req, res) => {
     //just have the user enter the details temporarily
-    console.log("YEAH", req.session.passport.user);
-    res.status(200).send(req.session.passport.user);
+    if (!req.session.passport.user) {
+        res.redirect('/auth/google');
+    }
+    const data = "";
+    res.status(200).render(process.env.PROJECT_DIR + '/Webpages' + '/OauthPage.ejs');
 })
 
 userrouter.route('/loginOauth').post((req, res) => {
