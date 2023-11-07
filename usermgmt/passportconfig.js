@@ -19,15 +19,17 @@ passport.use(new GoogleStrategy({
         displayname,
         email
     };
+    var msg=user;
     GetOauthUser(user.id)
         .then((message) => {
-            done(null, message);
+            msg = message;
         })
         .catch((error) => {
             console.log(error);
-            const msg = AddOauthUser(user.id, user.displayname, user.email);
-            done(null, msg);
+            const message = AddOauthUser(user.id, user.displayname, user.email);
+            msg = message;
         })
+    done(null, msg);
 }));
 
 passport.serializeUser(function (user, cb) {
