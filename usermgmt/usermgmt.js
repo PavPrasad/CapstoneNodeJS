@@ -160,8 +160,11 @@ userrouter.route('/loginOauth').get((req, res) => {
     if (!req.session.passport.user) {
         res.redirect('/auth/google');
     }
-    const data = "";
-    res.status(200).render(process.env.PROJECT_DIR + '/Webpages' + '/OauthPage.ejs');
+    else {
+        const data = "";
+        res.status(200).render(process.env.PROJECT_DIR + '/Webpages' + '/OauthPage.ejs');
+    }
+    res.status(404);
 })
 
 userrouter.route('/loginOauth').post((req, res) => {

@@ -24,6 +24,7 @@ passport.use(new GoogleStrategy({
             done(null, message);
         })
         .catch((error) => {
+            console.log(error);
             const msg = AddOauthUser(user.id, user.displayname, user.email);
             done(null, msg);
         })
