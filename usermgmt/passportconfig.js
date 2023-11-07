@@ -19,7 +19,6 @@ passport.use(new GoogleStrategy({
         displayname,
         email
     };
-    const ttl = 3600;
     GetOauthUser(user.id)
         .then((message) => {
             done(null, message);
@@ -28,8 +27,6 @@ passport.use(new GoogleStrategy({
             const msg = AddOauthUser(user.id, user.displayname, user.email);
             done(null, msg);
         })
-    done(null, user);
-
 }));
 
 passport.serializeUser(function (user, cb) {
