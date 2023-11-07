@@ -39,11 +39,6 @@ app.use(userrouter);
 app.get('/auth/google',
     passport.authenticate('google'),
     (req, res) => {
-    if (!req.session.user) {
-        req.session.user = {};
-        req.session.save();
-    }
-
     res.status(201).send();
 });
 app.get('/auth/google/callback', passport.authenticate('google', {
