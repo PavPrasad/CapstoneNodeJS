@@ -130,7 +130,7 @@ userrouter.route('/login').post((req, res) => {
 );
 
 userrouter.route('/unityLogin').post((req, res) => {
-    CheckCookie(req.body.username, req.body.Cookie)
+    CheckCookie(req.body.username, req.body.cookie)
         .then((cookiedetails) => {
             console.log(cookiedetails);
             const a = new Date();
