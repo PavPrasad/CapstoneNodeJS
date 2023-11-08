@@ -37,7 +37,6 @@ userrouter.get('/favicon.ico', (req, res) => {
 
 userrouter.get('/updateavatar', (req, res) => {
     if (!req.session.userdetails) {
-
     }
     res.sendFile(process.env.PROJECT_DIR + '/Webpages' + '/updateavatar.html')
 })
@@ -159,8 +158,8 @@ userrouter.route('/signupOauth').post((req, res) => {
         res.redirect('/auth./google');
     } else {
         AddOauthBody(req.session.passport.user.id, req.session.passport.user.body); 
+        res.send(201).send("Body successfully updated , you can login to APP using email temporarily")
     }
-
 })
 
 userrouter.route('/loginOauth').get((req, res) => {
@@ -173,10 +172,6 @@ userrouter.route('/loginOauth').get((req, res) => {
         res.status(200).render(process.env.PROJECT_DIR + '/Webpages' + '/OauthPage.ejs', { data });
     }
     res.status(404);
-})
-
-userrouter.route('/loginOauth').post((req, res) => {
-    res.status(501).send('not implemented');
 })
 
 
