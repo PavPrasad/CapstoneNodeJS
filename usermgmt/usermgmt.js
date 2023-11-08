@@ -114,7 +114,7 @@ userrouter.route('/login').post((req, res) => {
                     .then((message2) => {
                         const data = {
                             username: message.username, cookie: message2.cookie,
-                            ttl: myttl, body: message.body
+                            ttl: myttl, body: message2.body
                         };
                         req.session.userdetails = data;
                         req.session.save();
