@@ -37,6 +37,9 @@ userrouter.get('/favicon.ico', (req, res) => {
 })
 
 userrouter.get('/updateavatar', (req, res) => {
+    if (!req.session.userdetails) {
+
+    }
     res.sendFile(process.env.PROJECT_DIR + '/Webpages' + '/updateavatar.html')
 })
 userrouter.get('/model/avatar/:id', (req, res) => {
@@ -113,6 +116,8 @@ userrouter.route('/login').post((req, res) => {
                             username: message.username, cookie: message2.cookie,
                             ttl: myttl, body: message.body
                         };
+                        req.session.userdetails = data;
+                        req.session.save();
                         res.status(200).json(data);
                     }).catch((error) => {
                         console.log(error);
