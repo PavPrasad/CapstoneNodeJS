@@ -59,7 +59,7 @@ const AddUser = async (username, password) => {
         if (existingUser) {
             throw new Error("User already exists");
         }
-        const newPlayer = new Player({ username, password, "body": "" });
+        const newPlayer = new Player({ username, password, "body": "NA" });
         await newPlayer.save();
 
         return "Player added";
@@ -93,6 +93,16 @@ const VerifyUserLogin = (username, password) => {
         }
     });
 }
+const addBodyDetails = async (username, password, playerbody) => {
+    try {
+        const data = await Player.findOne({ username, password });
+        data.body = playerbody;
+        await data.save();
+        console.log('Document updated successfully.');
+    } catch (err) {
+        console.error(err);
+    };
+}
 
 const CookieSchema = new mongoose.Schema({
     username: String,
@@ -111,16 +121,6 @@ const CheckCookie = (username, cookie) => {
             reject("Cookie not found");
         }
     });
-}
-const addBodyDetails = async (username, password, playerbody) => {
-    try {
-        const data = await Player.findOne({ username, password });
-        data.body = playerbody;
-        await data.save();
-        //console.log('Document updated successfully.');
-    } catch (err) {
-        console.error(err);
-    };
 }
 const AddCookie = (username, cookie, ttl) => {
     return new Promise(async (resolve, reject) => {

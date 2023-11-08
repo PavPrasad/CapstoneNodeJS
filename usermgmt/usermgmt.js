@@ -107,7 +107,7 @@ userrouter.route('/login').post((req, res) => {
     console.log(req.body.username, req.body.password)
     VerifyUserLogin(req.body.username, req.body.password)
         .then((message) => {
-            if (message.body === "") {
+            if (message.body === "NA") {
                 res.status(201).send("please enter avatar details before entering");
             } else {
                 AddCookie(message.username, generateAccessToken(message.username), myttl)
