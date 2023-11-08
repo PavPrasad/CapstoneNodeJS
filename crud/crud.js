@@ -168,7 +168,7 @@ const OauthSchema = new mongoose.Schema({
     email: String,
     body: String
 })
-const Oauth = mongoose.model("OauthStorage", OauthSchema);
+const Oauth = mongoose.model("oauthstorage", OauthSchema);
 const AddOauthUser = async(id,displayname,email) => {
     try {
         const existingUser = await GetOauthUser(id);
