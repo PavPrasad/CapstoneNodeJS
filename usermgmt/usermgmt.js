@@ -157,7 +157,7 @@ userrouter.route('/signupOauth').post((req, res) => {
     if (!req.session.passport.user) {
         res.redirect('/auth./google');
     } else {
-        AddOauthBody(req.session.passport.user.id, req.session.passport.user.body); 
+        AddOauthBody(req.session.passport.user.id, req.body.body); 
         res.send(201).send("Body successfully updated , you can login to APP using email temporarily")
     }
 })
