@@ -175,7 +175,7 @@ const AddOauthUser = async(id,displayname,email) => {
         if (existingUser) {
             throw new Error("User already exists");
         }
-        const newPlayer = new Oauth({ id, displayname,email, "body": "" });
+        const newPlayer = new Oauth({ id, displayname,email, "body": "NA" });
         await newPlayer.save();
 
         return "Oauth Player added";
