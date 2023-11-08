@@ -187,6 +187,7 @@ const GetOauthUser = (id) => {
     return new Promise((resolve, reject) => {
         const existingUser = Oauth.findOne({ id });
         if (existingUser) {
+            console.log("getoauth", existingUser);
             resolve(existingUser);
         } else {
             reject("User not found");
@@ -270,5 +271,6 @@ module.exports = {
     AddCookie,
     addBodyDetails,
     GetOauthUser,
-    AddOauthUser
+    AddOauthUser,
+    AddOauthBody
 };

@@ -19,8 +19,10 @@ passport.use(new GoogleStrategy({
         displayname,
         email
     };
-    var msg=user;
-    await GetOauthUser(user.id)
+    var msg = user;
+    console.log(user);
+    await AddOauthUser(user.id, user.displayname, user.email);
+/*    await GetOauthUser(user.id)
         .then((message) => {
             msg = message;
         })
@@ -28,7 +30,7 @@ passport.use(new GoogleStrategy({
             console.log(error);
             const message = AddOauthUser(user.id, user.displayname, user.email);
             msg = message;
-        })
+        })*/
     done(null, msg);
 }));
 
