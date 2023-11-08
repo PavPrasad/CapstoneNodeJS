@@ -162,7 +162,8 @@ userrouter.route('/loginOauth').get((req, res) => {
     }
     else {
         const data = req.session.passport.user;
-        res.status(200).render(process.env.PROJECT_DIR + '/Webpages' + '/OauthPage.ejs',data);
+        console.log(data);
+        res.status(200).render(process.env.PROJECT_DIR + '/Webpages' + '/OauthPage.ejs', { data });
     }
     res.status(404);
 })
