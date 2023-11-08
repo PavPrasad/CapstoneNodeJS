@@ -104,7 +104,6 @@ userrouter.route('/delete').post((req, res) => {
 
 myttl = "86400000"
 userrouter.route('/login').post((req, res) => {
-    console.log(req.body.username, req.body.password)
     VerifyUserLogin(req.body.username, req.body.password)
         .then((message) => {
             if (message.body === "NA") {
@@ -114,8 +113,9 @@ userrouter.route('/login').post((req, res) => {
                     .then((message2) => {
                         const data = {
                             username: message.username, cookie: message2.cookie,
-                            ttl: myttl, body: message2.body
+                            ttl: myttl, body: message.body
                         };
+
                         req.session.userdetails = data;
                         req.session.save();
                         res.status(200).json(data);

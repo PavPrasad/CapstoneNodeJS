@@ -85,7 +85,7 @@ const VerifyUserLogin = (username, password) => {
     return new Promise(async (resolve, reject) => {
         const existingUser = await Player.findOne({ username, password });
         if (existingUser) {
-            //console.log(existingUser)
+            console.log(existingUser)
             resolve(existingUser);
         } else {
             //console.log("What the ??")
