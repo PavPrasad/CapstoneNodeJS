@@ -161,9 +161,7 @@ userrouter.route('/loginOauth').get((req, res) => {
         res.redirect('/auth/google');
     }
     else {
-        const data = req.session.passport.user;
-        console.log(data);
-        res.status(200).render(process.env.PROJECT_DIR + '/Webpages' + '/OauthPage.ejs', { data });
+        res.status(200).render(process.env.PROJECT_DIR + '/Webpages' + '/OauthPage.ejs', { req.session.passport.user });
     }
     res.status(404);
 })
