@@ -85,7 +85,6 @@ const VerifyUserLogin = (username, password) => {
     return new Promise(async (resolve, reject) => {
         const existingUser = await Player.findOne({ username, password });
         if (existingUser) {
-            console.log(existingUser)
             resolve(existingUser);
         } else {
             //console.log("What the ??")
@@ -98,7 +97,6 @@ const addBodyDetails = async (username, password, playerbody) => {
         const data = await Player.findOne({ username, password });
         data.body = playerbody;
         await data.save();
-        console.log('Document updated successfully.');
     } catch (err) {
         console.error(err);
     };
@@ -187,7 +185,6 @@ const GetOauthUser = (id) => {
     return new Promise((resolve, reject) => {
         const existingUser = Oauth.findOne({ id });
         if (existingUser) {
-            console.log("getoauth", existingUser);
             resolve(existingUser);
         } else {
             reject("User not found");
@@ -199,7 +196,6 @@ const AddOauthBody = async (id,newbody) => {
     const data = await Oauth.findOne({ id });
     data.body = newbody;
     await data.save();
-    console.log('Document updated successfully.');
 } catch (err) {
     console.error(err);
 };
