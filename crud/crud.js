@@ -11,7 +11,7 @@ const connectDB =  () => {
         saveUninitialized: true,
         cookie: {
             secure: true,
-            maxAge: 1000*30
+            maxAge: 1000*60*10
         },
         store: new MongoStore({
             databaseName: 'sessions',
