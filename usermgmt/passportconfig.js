@@ -20,7 +20,7 @@ passport.use(new GoogleStrategy({
         email
     };
     var msg=user;
-    GetOauthUser(user.id)
+    await GetOauthUser(user.id)
         .then((message) => {
             msg = message;
         })

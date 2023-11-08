@@ -193,6 +193,16 @@ const GetOauthUser = (id) => {
         }
     });
 };
+const AddOauthBody = async (id,newbody) => {
+    try { 
+    const data = await Oauth.findOne({ id });
+    data.body = newbody;
+    await data.save();
+    console.log('Document updated successfully.');
+} catch (err) {
+    console.error(err);
+};
+}
 
 /*
 const TimeOauthSchema = new mongoose.Schema({

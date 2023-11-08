@@ -15,8 +15,7 @@ const {
     DeleteCookie,
     AddCookie,
     addBodyDetails,
-    GetOauthUser,
-    AddOauthUser
+    AddOauthBody
 } = require('../crud/crud');
 
 function generateAccessToken(e) {
@@ -156,7 +155,11 @@ userrouter.route('/unityLogin').post((req, res) => {
 
 
 userrouter.route('/signupOauth').post((req, res) => {
-    console.log(req.body.username, req.body.password);
+    if (!req.session.passport.user) {
+        res.redirect('/auth./google');
+    } else {
+        AddOauthBody(req.session.passport.user.id, req.session.passport.user.body); 
+    }
 
 })
 
