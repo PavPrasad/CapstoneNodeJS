@@ -15,7 +15,8 @@ const {
     DeleteCookie,
     AddCookie,
     addBodyDetails,
-    AddOauthBody
+    AddOauthBody,
+    GetUser
 } = require('../crud/crud');
 
 function generateAccessToken(e) {
@@ -152,6 +153,19 @@ userrouter.route('/unityLogin').post((req, res) => {
         })
 })
 
+userrouter.route('/getavatar').post((req, res) => {
+    if (req.params.username) {
+        GetUser(req.params.username)
+            .then((message) => {
+                res.status(200).send(message.body);
+            })
+            .catch((error) => {
+                res.status(401).send(error);
+            })
+    } else {
+        res.status(404).send("invalid input");
+    }
+});
 
 userrouter.route('/signupOauth').post((req, res) => {
     if (!req.session.passport.user) {
