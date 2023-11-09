@@ -154,7 +154,7 @@ userrouter.route('/unityLogin').post((req, res) => {
 })
 
 userrouter.route('/getavatar').post((req, res) => {
-    if (req.params.username) {
+    //if (req.params.username) {
         GetUser(req.params.username)
             .then((message) => {
                 res.status(200).send(message.body);
@@ -162,9 +162,9 @@ userrouter.route('/getavatar').post((req, res) => {
             .catch((error) => {
                 res.status(401).send(error);
             })
-    } else {
+/*    } else {
         res.status(404).send("invalid input");
-    }
+    }*/
 });
 
 userrouter.route('/signupOauth').post((req, res) => {
