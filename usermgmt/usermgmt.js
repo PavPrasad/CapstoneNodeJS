@@ -155,7 +155,7 @@ userrouter.route('/unityLogin').post((req, res) => {
 
 userrouter.route('/getavatar').post((req, res) => {
     //if (req.params.username) {
-        GetUser(req.params.username)
+        GetUser(req.body.username)
             .then((message) => {
                 res.status(200).send(message.body);
             })
