@@ -29,7 +29,7 @@ userrouter.get('/signup', (req, res) => {
 })
 
 userrouter.get('/login', (req, res) => {
-    res.sendFile(process.env.PROJECT_DIR + '/Webpages' + '/login.ejs')
+    res.status(200).render(process.env.PROJECT_DIR + '/Webpages' + '/login.ejs')
 })
 
 userrouter.get('/favicon.ico', (req, res) => {
