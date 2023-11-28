@@ -32,7 +32,7 @@ const Player = mongoose.model('player', playerSchema);
 const deletetest = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const result = await MyModel.deleteOne(data);
+            const result = await Player.deleteOne(data);
             if (result.deletedCount === 1) {
                 resolve("Deleted successfully");
             } else {

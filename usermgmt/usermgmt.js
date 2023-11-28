@@ -41,15 +41,15 @@ userrouter.get('/updateavatar', (req, res) => {
     }
     res.sendFile(process.env.PROJECT_DIR + '/Webpages' + '/updateavatar.html')
 })
-userrouter.get('/model/avatar/:id', (req, res) => {
+/*userrouter.get('/model/avatar/:id', (req, res) => {
     console.log(req.params.id)
     res.sendFile(process.env.PROJECT_DIR + '/Models/avatar/' + req.params.id + '.gltf')
-})
-userrouter.route('/test').post((req, res) => {
+})*/
+/*userrouter.route('/test').post((req, res) => {
     const data = req.body;
     const task = testdb(data);
     res.status(201).json({ task });
-})
+})*/
 userrouter.route('/deltest').post((req, res) => {
     const data = req.body;
     deletetest(data).
