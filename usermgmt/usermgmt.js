@@ -68,8 +68,12 @@ userrouter.get('/download', (req, res) => {
 userrouter.post('/updateavatar', (req, res) => {
     VerifyUserLogin(req.body.username, req.body.password)
         .then((message) => {
-            addBodyDetails(message.username,message.password,req.body.body)
-            res.status(200).send("Finished updating details");
+            const status =addBodyDetails(message.username,message.password,req.body.body)
+            if (status == true) {
+                res.status(200).send("Finished updating details");
+            } else {
+                res.status(404).send(status);
+            }
         })
         .catch(() => {
             res.status(404).send("Username or password incorrect");

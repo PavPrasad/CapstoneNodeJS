@@ -2,6 +2,9 @@
 const mongoose = require('mongoose')
 const session = require('express-session')
 const MongoStore = require('connect-mongodb-session')(session);
+const bcrypt = require('bcryptjs');
+
+
 
 const connectDB =  () => {
      mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true })
@@ -24,10 +27,33 @@ const connectDB =  () => {
 }
 
 const playerSchema = new mongoose.Schema({
-    username: String,
-    password: String,
+    username: {
+        type: String,
+        required: true,
+        unique: true, // ensure the username is unique
+    },
+    password: { type: String, required: true },
     body: String,
-})
+}, {
+    timestamps: true, // add timestamps
+    collection: 'players', // specify the collection name
+    autoIndex: true, // auto create indexes
+});
+playerSchema.pre('save', async function save(next) {
+    if (!this.isModified('password')) return next();
+    try {
+        const salt = await bcrypt.genSalt(process.env.SALT_WORK_FACTOR);
+        this.password = await bcrypt.hash(this.password, salt);
+        return next();
+    } catch (err) {
+        return next(err);
+    }
+});
+
+playerSchema.methods.validatePassword = async function validatePassword(data) {
+    return await bcrypt.compare(data, this.password);
+};
+
 const Player = mongoose.model('player', playerSchema);
 const deletetest = (data) => {
     return new Promise(async (resolve, reject) => {
@@ -81,22 +107,27 @@ const DeleteUser = (username, password) => {
         }
     });
 };
-const VerifyUserLogin = (username, password) => {
+const VerifyUserLogin = async (username, password) => {
     return new Promise(async (resolve, reject) => {
-        const existingUser = await Player.findOne({ username, password });
-        if (existingUser) {
+        const existingUser = await Player.findOne({ username });
+        if (await existingUser.validatePassword(password)) {
             resolve(existingUser);
         } else {
-            //console.log("What the ??")
-            reject("Username or passord incorrect");
+            reject("Username or password incorrect");
         }
     });
 }
 const addBodyDetails = async (username, password, playerbody) => {
     try {
-        const data = await Player.findOne({ username, password });
-        data.body = playerbody;
-        await data.save();
+        const find = await Player.findOne({ playerbody });
+        if (find) {
+            return "Body taken";
+        } else {
+            const data = await Player.findOne({ username, password });
+            data.body = playerbody;
+            await data.save();
+            return true;
+        }
     } catch (err) {
         console.error(err);
     };
